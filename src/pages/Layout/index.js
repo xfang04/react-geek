@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import { request } from "@/utils";
 
 const Layout = () => {
-  return (
-    <div>Layout</div>
-  )
-}
+  useEffect(() => {
+    request.get("/user/profile").then((res) => {
+      console.log(res);
+    });
+  }, []);
+  return <div>Layout</div>;
+};
 
-export default Layout
+export default Layout;
