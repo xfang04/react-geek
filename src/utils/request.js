@@ -18,7 +18,7 @@ request.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // 添加响应拦截器
@@ -37,7 +37,7 @@ request.interceptors.response.use(
       window.location.reload();
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export { request };

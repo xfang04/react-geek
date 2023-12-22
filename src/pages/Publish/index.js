@@ -1,21 +1,21 @@
 import {
-  Card,
   Breadcrumb,
-  Form,
   Button,
+  Card,
+  Form,
   Input,
-  Space,
-  Select,
-  Radio,
-  Upload,
   message,
+  Radio,
+  Select,
+  Space,
+  Upload,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Link } from "react-router-dom";
 import "./index.scss";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createArticleApi, getChannelsApi } from "@/apis/article";
 
 const { Option } = Select;

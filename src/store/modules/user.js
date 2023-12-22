@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getToken, setToken as _setToken, removeToken } from "@/utils/token";
-import { loginApi, getUserInfoApi } from "@/apis/user";
+import { getToken, removeToken, setToken as _setToken } from "@/utils/token";
+import { getUserInfoApi, loginApi } from "@/apis/user";
+
 const userStore = createSlice({
   name: "user",
   // 数据状态

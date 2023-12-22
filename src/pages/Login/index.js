@@ -1,5 +1,5 @@
 import "./index.scss";
-import { Card, Form, Input, Button, message } from "antd";
+import { Button, Card, Form, Input, message } from "antd";
 import logo from "@/assets/logo.png";
 import { useDispatch } from "react-redux";
 import { fetchLogin } from "@/store/modules/user";
