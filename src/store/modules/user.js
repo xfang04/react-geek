@@ -26,7 +26,7 @@ const userStore = createSlice({
   },
 });
 
-// 解构出actionCreater
+// 解构出actions
 const { setToken, setUserInfo, clearUserInfo } = userStore.actions;
 
 // 获取reducer函数

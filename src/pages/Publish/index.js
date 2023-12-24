@@ -15,13 +15,14 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Link } from "react-router-dom";
 import "./index.scss";
-import { useEffect, useRef, useState } from "react";
-import { createArticleApi, getChannelsApi } from "@/apis/article";
+import { useRef, useState } from "react";
+import { createArticleApi } from "@/apis/article";
+import { useChannel } from "@/hooks/useChannel";
 
 const { Option } = Select;
 
 const Publish = () => {
-  const [channelList, setChannelList] = useState([]);
+  const { channelList } = useChannel();
   const [imageList, setImageList] = useState([]);
   const [imageType, setImageType] = useState(0);
   const cacheImageList = useRef([]);
@@ -45,13 +46,7 @@ const Publish = () => {
       setImageList(cacheImageList.current);
     }
   };
-  useEffect(() => {
-    const getChannelList = async () => {
-      const res = await getChannelsApi();
-      setChannelList(res.data.channels);
-    };
-    getChannelList();
-  }, []);
+
   const onFinish = async (formValue) => {
     if (imageType !== imageList.length)
       return message.warning("图片类型和数量不一致");

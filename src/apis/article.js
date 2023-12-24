@@ -15,4 +15,24 @@ function createArticleApi(data) {
   });
 }
 
-export { getChannelsApi, createArticleApi };
+function getArticleListApi(params) {
+  return request({
+    method: "GET",
+    url: "/mp/articles",
+    params,
+  });
+}
+
+function deleteArticleApi(id) {
+  return request({
+    method: "DELETE",
+    url: `/mp/articles/${id}`,
+  });
+}
+
+export {
+  getChannelsApi,
+  createArticleApi,
+  getArticleListApi,
+  deleteArticleApi,
+};
