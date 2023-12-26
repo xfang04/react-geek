@@ -3,9 +3,11 @@ import Login from "@/pages/Login";
 
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import AuthRoute from "@/components/AuthRoute";
-import Home from "@/pages/Home";
-import Article from "@/pages/Article";
-import Publish from "@/pages/Publish";
+import { lazy, Suspense } from "react";
+
+const Home = lazy(() => import("@/pages/Home"));
+const Article = lazy(() => import("@/pages/Article"));
+const Publish = lazy(() => import("@/pages/Publish"));
 
 const router = createBrowserRouter([
   {
@@ -18,15 +20,27 @@ const router = createBrowserRouter([
       },
       {
         path: "home",
-        element: <Home />,
+        element: (
+          <Suspense fallback={<div>loading...</div>}>
+            <Home />
+          </Suspense>
+        ),
       },
       {
         path: "article",
-        element: <Article />,
+        element: (
+          <Suspense fallback={<div>loading...</div>}>
+            <Article />
+          </Suspense>
+        ),
       },
       {
         path: "publish",
-        element: <Publish />,
+        element: (
+          <Suspense fallback={<div>loading...</div>}>
+            <Publish />
+          </Suspense>
+        ),
       },
     ],
   },

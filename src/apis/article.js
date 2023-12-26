@@ -23,6 +23,21 @@ function getArticleListApi(params) {
   });
 }
 
+function getArticleApi(id) {
+  return request({
+    method: "GET",
+    url: `/mp/articles/${id}`,
+  });
+}
+
+function updateArticleApi(data) {
+  return request({
+    method: "PUT",
+    url: `/mp/articles/${data.id}?draft=false`,
+    data,
+  });
+}
+
 function deleteArticleApi(id) {
   return request({
     method: "DELETE",
@@ -33,6 +48,8 @@ function deleteArticleApi(id) {
 export {
   getChannelsApi,
   createArticleApi,
+  getArticleApi,
   getArticleListApi,
+  updateArticleApi,
   deleteArticleApi,
 };

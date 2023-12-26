@@ -13,10 +13,14 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import "./index.scss";
-import { useRef, useState } from "react";
-import { createArticleApi } from "@/apis/article";
+import { useEffect, useRef, useState } from "react";
+import {
+  createArticleApi,
+  getArticleApi,
+  updateArticleApi,
+} from "@/apis/article";
 import { useChannel } from "@/hooks/useChannel";
 
 const { Option } = Select;
@@ -26,6 +30,9 @@ const Publish = () => {
   const [imageList, setImageList] = useState([]);
   const [imageType, setImageType] = useState(0);
   const cacheImageList = useRef([]);
+  const [form] = Form.useForm();
+  const [searchParams] = useSearchParams();
+  const articleId = searchParams.get("id");
 
   const onUploadChange = (info) => {
     setImageList(info.fileList);
@@ -51,6 +58,15 @@ const Publish = () => {
     if (imageType !== imageList.length)
       return message.warning("图片类型和数量不一致");
     const { channel_id, content, title } = formValue;
+    const formatUrl = (list) => {
+      return list.map((item) => {
+        if (item.response) {
+          return item.response.data.url;
+        } else {
+          return item.url;
+        }
+      });
+    };
     const reqData = {
       channel_id,
       content,
@@ -58,12 +74,35 @@ const Publish = () => {
       type: imageType,
       cover: {
         type: imageType,
-        images: imageList.map((item) => item.response.data.url),
+        images: formatUrl(imageList),
       },
     };
-    createArticleApi(reqData);
-    message.success("发布成功");
+    if (articleId) {
+      // 编辑
+      await updateArticleApi({ ...reqData, id: articleId });
+    } else {
+      // 新增
+      await createArticleApi(reqData);
+    }
+
+    message.success(`${articleId ? "编辑" : "发布"}文章成功`);
   };
+
+  useEffect(() => {
+    async function getArticle() {
+      const res = await getArticleApi(articleId);
+      const { cover, ...formValue } = res.data;
+      // 设置表单数据
+      form.setFieldsValue({ ...formValue, type: cover.type });
+      setImageType(cover.type); // 封面类型
+      setImageList(cover.images.map((url) => ({ url }))); // 封面list
+    }
+
+    if (articleId) {
+      // 拉取数据回显
+      getArticle();
+    }
+  }, [articleId, form]);
   return (
     <div className="publish">
       <Card
@@ -71,7 +110,7 @@ const Publish = () => {
           <Breadcrumb
             items={[
               { title: <Link to={"/"}>首页</Link> },
-              { title: "发布文章" },
+              { title: `${articleId ? "编辑" : "发布"}文章` },
             ]}
           />
         }
@@ -140,7 +179,7 @@ const Publish = () => {
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
               <Button size="large" type="primary" htmlType="submit">
-                发布文章
+                `${articleId ? "编辑" : "发布"}文章`
               </Button>
             </Space>
           </Form.Item>
